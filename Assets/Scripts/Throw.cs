@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Throw : MonoBehaviour
 { 
-    public GameObject projectil;
+    public GameObject projectilPrefab;
     public Transform aimDir;
+    public bool CanAttack;
 
     void Start()
     {
@@ -15,7 +16,13 @@ public class Throw : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (CanAttack == false)
+        {
+            return;
+        }
+
+        Shoot();
+        AimShooting();
     }
 
 
@@ -30,7 +37,10 @@ public class Throw : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate()
+            GameObject projectil = Instantiate(projectilPrefab ,aimDir.position , Quaternion.identity);
+            projectil.GetComponent<Proyectil>().ShootTo(aimDir.forward);
+            CanAttack = false;
+            GetComponent<Player>().NotifyShootComplete(projectil.GetComponent<Proyectil>());
         }
     }
     
